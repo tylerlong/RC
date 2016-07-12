@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RC", "RC\RC.csproj", "{05468A6A-5F26-48C4-A8B0-86EE2C2B81AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RC.Test", "RC.Test\RC.Test.csproj", "{B4A5332E-6CFD-4505-AAB0-BDF607CF55AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05468A6A-5F26-48C4-A8B0-86EE2C2B81AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05468A6A-5F26-48C4-A8B0-86EE2C2B81AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05468A6A-5F26-48C4-A8B0-86EE2C2B81AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05468A6A-5F26-48C4-A8B0-86EE2C2B81AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4A5332E-6CFD-4505-AAB0-BDF607CF55AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A5332E-6CFD-4505-AAB0-BDF607CF55AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A5332E-6CFD-4505-AAB0-BDF607CF55AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4A5332E-6CFD-4505-AAB0-BDF607CF55AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
