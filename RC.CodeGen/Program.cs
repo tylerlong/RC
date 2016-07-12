@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 
 namespace RingCentral.CodeGen
@@ -22,6 +21,24 @@ namespace RingCentral.CodeGen
                 return false;
             }
             return true;
+        }
+
+        private static bool IsListAction(JProperty jp)
+        {
+            if (jp.Name == "/restapi")
+            {
+                return true;
+            }
+            if (jp.Value.SelectToken("get.responses.default.schema.properties.navigation") != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void WriteFile(string filePath, string content)
+        {
+            File.WriteAllText(Path.Combine("~/Projects/RC/RC/Generated/", filePath), content);
         }
 
         public static void Main(string[] args)
@@ -81,25 +98,21 @@ namespace RingCentral.CodeGen
             foreach (var prop in (jo.SelectToken("paths") as JObject).Properties())
             {
                 var path = prop.Name;
-                var tokens = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries).Reverse().ToArray();
-                bool hasId = false;
-                string segment = "";
-                if (IsSegment(tokens[0]))
-                {
-                    segment = tokens[0];
-                }
-                else 
-                {
-                    hasId = true;
-                    segment = tokens[1];
-                }
+                var segment = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries).Reverse().First(token => IsSegment(token));
                 if (!actions.ContainsKey(segment))
                 {
                     actions[segment] = new HashSet<string>();
                 }
                 foreach (var method in (prop.Value as JObject).Properties().Select(i => i.Name).Where(m => new string[] { "get", "post", "put", "delete"}.Contains(m)))
                 {
-                    actions[segment].Add(method + (hasId ? "-id" : ""));
+                    if (method == "get" && IsListAction(prop))
+                    {
+                        actions[segment].Add("list");
+                    }
+                    else 
+                    {
+                        actions[segment].Add(method);
+                    }
                 }
             }
             foreach (var kv in actions)
@@ -110,6 +123,16 @@ namespace RingCentral.CodeGen
                 {
                     Console.WriteLine("\t" + v);
                 }
+            }
+
+
+
+            // generate
+            foreach (var kv in actions)
+            {
+                var className = kv.Key;
+                var methods = kv.Value;
+
             }
         }
     }
