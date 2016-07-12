@@ -3,43 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using RazorEngine;
+using RazorEngine.Templating;
 
 namespace RingCentral.CodeGen
 {
-    class MainClass
+    partial class MainClass
     {
         private const string SwaggerVersion = "basic.json";
-
-        private static bool IsSegment(string s)
-        {
-            if (s == "v1.0")
-            {
-                return false;
-            }
-            if (s.StartsWith("{", StringComparison.CurrentCulture))
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private static bool IsListAction(JProperty jp)
-        {
-            if (jp.Name == "/restapi")
-            {
-                return true;
-            }
-            if (jp.Value.SelectToken("get.responses.default.schema.properties.navigation") != null)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        private void WriteFile(string filePath, string content)
-        {
-            File.WriteAllText(Path.Combine("~/Projects/RC/RC/Generated/", filePath), content);
-        }
 
         public static void Main(string[] args)
         {
@@ -128,11 +99,14 @@ namespace RingCentral.CodeGen
 
 
             // generate
+            var template = File.ReadAllText("Template/class.txt");
             foreach (var kv in actions)
             {
-                var className = kv.Key;
+                var className = PascalCase(kv.Key);
                 var methods = kv.Value;
-
+                var classContent = Engine.Razor.RunCompile(template, "templateKey", null,
+                                                   new { className = className, methods = methods });
+                WriteFile(className, classContent);
             }
         }
     }
