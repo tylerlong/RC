@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
-using System;
-namespace RC.Test
+
+namespace RingCentral.Test
 {
     [TestFixture()]
     public class Test
@@ -11,4 +11,3 @@ namespace RC.Test
         }
     }
 }
-
